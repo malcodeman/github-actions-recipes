@@ -9,7 +9,7 @@ These are some use cases and code snippets to get you started with GitHub Action
 
 ### Surge deployment
 
-```
+```yaml
 name: Deployment
 
 on:
@@ -41,7 +41,7 @@ jobs:
 
 ### Cron job
 
-```
+```yaml
 name: Cron
 
 on:
