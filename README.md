@@ -7,7 +7,9 @@ These are some use cases and code snippets to get you started with GitHub Action
 
 ## Recipes
 
-### Surge deployment
+### Next.js Static HTML Export Surge deployment
+
+`"build": "next build && next export"`
 
 ```yaml
 name: Deployment
@@ -37,6 +39,43 @@ jobs:
 
       - name: Deploy to surge
         run: surge ./out APP_NAME.surge.sh --token ${{secrets.SURGE_TOKEN}}
+```
+
+### React.js Surge deployment
+
+200.html page is required for [client-side routing](https://surge.sh/help/adding-a-200-page-for-client-side-routing).
+
+```yaml
+name: Deployment
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install packages
+        run: npm install
+
+      - name: Build the app
+        run: npm run build
+
+      - name: Rename index file
+        run: mv build/index.html build/200.html
+
+      - name: Install Surge
+        run: npm install -g surge
+
+      - name: Deploy to surge
+        run: surge ./build APP_NAME.surge.sh --token ${{secrets.SURGE_TOKEN}}
 ```
 
 ### Cron job
