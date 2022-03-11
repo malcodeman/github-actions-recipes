@@ -78,6 +78,37 @@ jobs:
         run: surge ./build APP_NAME.surge.sh --token ${{secrets.SURGE_TOKEN}}
 ```
 
+### Expo
+
+```yaml
+name: Deployment
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Install packages
+        run: npm install
+
+      - name: Install Expo CLI
+        run: npm install -g expo-cli
+
+      - name: Deploy to Expo
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: expo publish --non-interactive
+```
+
 ### Cron job
 
 ```yaml
